@@ -4,53 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Mensajes Pro - Suzuki Kabah</title>
-    <!-- Tailwind CSS para un diseño moderno y limpio -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between antialiased">
 
     <!-- Header -->
-    <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 shadow-md">
-        <div class="max-w-3xl mx-auto flex items-center justify-between">
-            <h1 class="text-xl font-bold tracking-wide text-amber-400">Suzuki Kabah <span class="text-slate-300 font-normal text-sm block sm:inline">| Asesor Digital Pro</span></h1>
-            <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full font-medium">WhatsApp Sales Engine</span>
+    <header class="bg-slate-900 border-b border-slate-800 py-4 px-6 shadow-md">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <h1 class="text-xl font-bold tracking-wide text-amber-400">Suzuki Kabah <span class="text-slate-400 font-normal text-sm block sm:inline">| Asesor Digital Pro</span></h1>
+            <span class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full font-medium">Motor Multitono</span>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-3xl w-full mx-auto p-4 sm:p-6 flex-grow">
+    <main class="max-w-4xl w-full mx-auto p-4 sm:p-6 flex-grow">
         
-        <div class="bg-slate-800/85 backdrop-blur border border-slate-700 rounded-2xl p-5 sm:p-8 shadow-xl space-y-6">
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-8 shadow-2xl space-y-6">
             
-            <!-- Instrucción inicial -->
             <div>
-                <h2 class="text-lg font-semibold text-slate-200">Optimiza tu mensaje de recontacto</h2>
-                <p class="text-sm text-slate-400 mt-1">Selecciona el tiempo, el modelo vigente, escribe tu nota rápida y genera un mensaje magnético listo para WhatsApp.</p>
+                <h2 class="text-lg font-semibold text-slate-100">Optimizador de Mensajes de Recontacto</h2>
+                <p class="text-sm text-slate-400 mt-1">Elige los parámetros del prospecto para generar automáticamente 3 enfoques listos para enviar por WhatsApp.</p>
             </div>
 
             <!-- 1. Selector de Tiempo -->
             <div class="space-y-2">
-                <label class="block text-sm font-medium text-slate-300">1. Tiempo de contacto sin responder:</label>
+                <label class="block text-sm font-medium text-slate-300">1. Tiempo sin respuesta del cliente:</label>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                    <button type="button" onclick="setTime('1_week', this)" class="time-btn text-xs sm:text-sm p-3 rounded-xl border border-slate-700 bg-slate-900/50 hover:border-amber-400 hover:text-amber-400 transition-all font-medium text-center focus:outline-none active">
-                        &lt; 1 semana <span class="block text-[10px] text-slate-400 font-normal">Tibio</span>
+                    <button type="button" onclick="setTime('1_week', this)" class="time-btn text-xs sm:text-sm p-3 rounded-xl border border-amber-400 text-amber-400 bg-slate-800 transition-all font-medium text-center focus:outline-none">
+                        &lt; 1 semana <span class="block text-[10px] text-slate-400 font-normal">Lead Tibio</span>
                     </button>
-                    <button type="button" onclick="setTime('15_days', this)" class="time-btn text-xs sm:text-sm p-3 rounded-xl border border-slate-700 bg-slate-900/50 hover:border-amber-400 hover:text-amber-400 transition-all font-medium text-center focus:outline-none">
+                    <button type="button" onclick="setTime('15_days', this)" class="time-btn text-xs sm:text-sm p-3 rounded-xl border border-slate-800 bg-slate-950 hover:border-amber-400 hover:text-amber-400 transition-all font-medium text-center focus:outline-none">
                         15 días <span class="block text-[10px] text-slate-400 font-normal">Enfriándose</span>
                     </button>
-                    <button type="button" onclick="setTime('30_days', this)" class="time-btn text-xs sm:text-sm p-3 rounded-xl border border-slate-700 bg-slate-900/50 hover:border-amber-400 hover:text-amber-400 transition-all font-medium text-center focus:outline-none">
-                        30 días <span class="block text-[10px] text-slate-400 font-normal">Frío / Comercial</span>
+                    <button type="button" onclick="setTime('30_days', this)" class="time-btn text-xs sm:text-sm p-3 rounded-xl border border-slate-800 bg-slate-950 hover:border-amber-400 hover:text-amber-400 transition-all font-medium text-center focus:outline-none">
+                        30 días <span class="block text-[10px] text-slate-400 font-normal">Lead Frío</span>
                     </button>
-                    <button type="button" onclick="setTime('more_30_days', this)" class="time-btn text-xs sm:text-sm p-3 rounded-xl border border-slate-700 bg-slate-900/50 hover:border-amber-400 hover:text-amber-400 transition-all font-medium text-center focus:outline-none">
-                        &gt; 30 días <span class="block text-[10px] text-slate-400 font-normal">Muy frío / Rescate</span>
+                    <button type="button" onclick="setTime('more_30_days', this)" class="time-btn text-xs sm:text-sm p-3 rounded-xl border border-slate-800 bg-slate-950 hover:border-amber-400 hover:text-amber-400 transition-all font-medium text-center focus:outline-none">
+                        &gt; 30 días <span class="block text-[10px] text-slate-400 font-normal">Rescate de Base</span>
                     </button>
                 </div>
             </div>
 
-            <!-- 2. Selector de Modelos Vigentes Suzuki -->
+            <!-- 2. Selector de Modelo Vigente -->
             <div class="space-y-2">
                 <label for="carModel" class="block text-sm font-medium text-slate-300">2. Modelo vigente de interés:</label>
-                <select id="carModel" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-amber-400 transition-colors text-sm font-medium">
+                <select id="carModel" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-amber-400 transition-colors text-sm font-medium">
                     <option value="Swift">Swift</option>
                     <option value="Dzire">Dzire</option>
                     <option value="Fronx">Fronx</option>
@@ -59,54 +57,74 @@
                 </select>
             </div>
 
-            <!-- 3. Borrador del Asesor -->
+            <!-- 3. Borrador o Nota del Asesor -->
             <div class="space-y-2">
-                <label for="draftInput" class="block text-sm font-medium text-slate-300">3. Tu nota o borrador rápido:</label>
-                <textarea id="draftInput" rows="3" placeholder="Ej. Preguntó por versión equipada, color, o financiamiento..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors text-sm"></textarea>
+                <label for="draftInput" class="block text-sm font-medium text-slate-300">3. Tu borrador o detalles que recuerdas (opcional):</label>
+                <textarea id="draftInput" rows="2" placeholder="Ej. Quería financiamiento, enganche bajo, o ver si teníamos color plata..." class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-amber-400 transition-colors text-sm"></textarea>
             </div>
 
-            <!-- Botón de Acción -->
-            <button onclick="generateMessage()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold py-3.5 px-6 rounded-xl transition-all shadow-lg hover:shadow-amber-500/20 flex items-center justify-center space-x-2 text-sm sm:text-base">
-                <span>⚡ Optimizar Mensaje Pro</span>
+            <!-- Botón Generador -->
+            <button onclick="generateMessages()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-3.5 px-6 rounded-xl transition-all shadow-lg hover:shadow-amber-500/20 flex items-center justify-center space-x-2 text-sm sm:text-base">
+                <span>⚡ Generar 3 Tonos Profesionales</span>
             </button>
 
-            <!-- Panel de Resultados -->
-            <div id="resultSection" class="hidden space-y-4 pt-4 border-t border-slate-700">
+            <!-- Panel de Resultados: 3 Variaciones -->
+            <div id="resultSection" class="hidden space-y-5 pt-6 border-t border-slate-800">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-sm font-semibold text-amber-400 uppercase tracking-wider">Mensaje Optimizado para WhatsApp</h3>
-                    <span id="badgeTime" class="text-xs bg-slate-700 text-slate-300 px-2.5 py-1 rounded-md"></span>
+                    <h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider">Opciones de Mensaje Sugeridas</h3>
+                    <span id="badgeTime" class="text-xs bg-slate-800 text-slate-300 px-3 py-1 rounded-md font-medium"></span>
                 </div>
 
-                <!-- Caja de texto del resultado -->
-                <div class="relative bg-slate-900 border border-slate-700 rounded-xl p-4">
-                    <div id="outputText" class="text-slate-200 whitespace-pre-wrap text-sm leading-relaxed font-normal"></div>
-                </div>
-
-                <!-- Botón Copiar -->
-                <button onclick="copyToClipboard()" id="copyBtn" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-100 font-medium py-2.5 px-4 rounded-xl transition-all flex items-center justify-center space-x-2 text-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                    <span id="copyBtnText">Copiar Mensaje para WhatsApp</span>
-                </button>
-
-                <!-- Tip del Asesor -->
-                <div class="bg-slate-900/50 border border-slate-700/60 rounded-xl p-3 flex items-start space-x-3 text-xs text-slate-400">
-                    <span class="text-amber-400 text-base leading-none">💡</span>
-                    <div>
-                        <strong class="text-slate-300 block mb-0.5">Estrategia aplicada:</strong>
-                        <span id="tipText"></span>
+                <!-- Tarjeta Tono 1: Casual / Cercano -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">Tono 1: Casual y Empático</span>
+                        <span class="text-[11px] text-slate-500">Cero presión • Conversacional</span>
                     </div>
+                    <p id="tone1Text" class="text-slate-200 whitespace-pre-wrap text-sm leading-relaxed"></p>
+                    <button onclick="copyTone('tone1Text', this)" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Copiar Tono Casual</span>
+                    </button>
                 </div>
+
+                <!-- Tarjeta Tono 2: Consultivo / Asesor Directo -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2.5 py-0.5 rounded-full">Tono 2: Consultivo Profesional</span>
+                        <span class="text-[11px] text-slate-500">Enfoque en solución • Asertivo</span>
+                    </div>
+                    <p id="tone2Text" class="text-slate-200 whitespace-pre-wrap text-sm leading-relaxed"></p>
+                    <button onclick="copyTone('tone2Text', this)" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Copiar Tono Consultivo</span>
+                    </button>
+                </div>
+
+                <!-- Tarjeta Tono 3: Oportunidad / Novedad Comercial -->
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 sm:p-5 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-full">Tono 3: Gancho Comercial / Novedad</span>
+                        <span class="text-[11px] text-slate-500">Valor añadido • Actualización de inventario</span>
+                    </div>
+                    <p id="tone3Text" class="text-slate-200 whitespace-pre-wrap text-sm leading-relaxed"></p>
+                    <button onclick="copyTone('tone3Text', this)" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                        <span>Copiar Tono Comercial</span>
+                    </button>
+                </div>
+
             </div>
 
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-800 mt-8">
-        Suzuki Kabah • Herramientas de Ventas Digitales Super Pro
+    <footer class="text-center py-4 text-xs text-slate-600 border-t border-slate-900 mt-8">
+        Suzuki Kabah • Herramientas Comerciales de Alto Impacto
     </footer>
 
-    <!-- Script de Lógica -->
+    <!-- Lógica JavaScript -->
     <script>
         let selectedTime = '1_week';
 
@@ -114,62 +132,62 @@
             selectedTime = timeKey;
             document.querySelectorAll('.time-btn').forEach(btn => {
                 btn.classList.remove('border-amber-400', 'text-amber-400', 'bg-slate-800');
-                btn.classList.add('bg-slate-900/50');
+                btn.classList.add('border-slate-800', 'bg-slate-950');
             });
             element.classList.add('border-amber-400', 'text-amber-400', 'bg-slate-800');
-            element.classList.remove('bg-slate-900/50');
+            element.classList.remove('border-slate-800', 'bg-slate-950');
         }
 
-        function generateMessage() {
+        // Matriz de los 3 tonos por cada rango de tiempo
+        const strategies = {
+            '1_week': {
+                badge: 'Lead Tibio (< 1 semana)',
+                tone1: (m, d) => `Hola [Nombre], ¿cómo estás? Te escribo rápido desde Suzuki Kabah. Me quedé pensando en lo que platicamos sobre el/la ${m}${d ? ` (${d})` : ''} y quería saber si te quedó alguna duda o si quieres que agendemos una prueba de manejo para que lo manejes sin prisa. ¿Cómo ves?`,
+                tone2: (m, d) => `Hola [Nombre], buen día. Te contacto de Suzuki Kabah para dar seguimiento puntual a tu cotización del/la ${m}. Para ayudarte a avanzar en tu comparativa, ¿prefieres que revisemos opciones de enganche y mensualidad o coordinamos una cita en agencia?`,
+                tone3: (m, d) => `Hola [Nombre], ¡excelente día! Te saludo de Suzuki Kabah. Tenemos justo disponibles un par de unidades para entrega inmediata del/la ${m}. Si estás evaluando cerrar este mes, podemos apartar una combinación ideal hoy mismo. ¿Te comparto la disponibilidad actual?`
+            },
+            '15_days': {
+                badge: 'Lead Enfriándose (15 días)',
+                tone1: (m, d) => `Hola [Nombre], ¡saludos! Sé que la rutina a veces no da tregua. Solo pasaba a saludarte desde Suzuki Kabah y ver cómo va madurando tu plan para el/la ${m}. ¿Sigues en la búsqueda o hiciste alguna pausa?`,
+                tone2: (m, d) => `Hola [Nombre], buen día. Revisando los prospectos activos en Suzuki Kabah recordé tu interés por el/la ${m}${d ? ` y tu consulta sobre ${d}` : ''}. Quería saber si ya tomaste una decisión o si aún necesitas que te apoye con alguna alternativa que se ajuste mejor.`,
+                tone3: (m, d) => `Hola [Nombre], ¿cómo te va? Te contacto de Suzuki Kabah porque nos llegó una actualización de inventario con configuraciones muy atractivas del/la ${m}. Pensé en avisarte antes de que se asignen. ¿Te gustaría ver qué versiones llegaron?`
+            },
+            '30_days': {
+                badge: 'Lead Frío (30 días)',
+                tone1: (m, d) => `Hola [Nombre], ¿cómo te va? Ya pasó un mes desde que platicamos sobre el/la ${m} y no quise insistir de más. Solo quería confirmar de forma relajada si tu proyecto de estreno sigue sobre la mesa o si ya encontraste otra opción. ¡Un saludo!`,
+                tone2: (m, d) => `Hola [Nombre], buen día. Te saludo de Suzuki Kabah. Sé que evaluar un auto toma tiempo; te escribo para saber si pudiste resolver los puntos que vimos sobre el/la ${m} o si te gustaría replantear la cotización con las condiciones vigentes. ¿Aún estás disponible para revisarlo?`,
+                tone3: (m, d) => `Hola [Nombre], excelente día. Arrancamos nuevas condiciones comerciales y esquemas de financiamiento este mes en Suzuki Kabah para el/la ${m}. Si todavía estás considerando estrenar, este cambio te puede ahorrar una buena diferencia. ¿Te gustaría conocer los nuevos números?`
+            },
+            'more_30_days': {
+                badge: 'Rescate de Base (> 30 días)',
+                tone1: (m, d) => `Hola [Nombre], sé que pasó bastante tiempo desde que cotizaste el/la ${m} con nosotros en Suzuki Kabah. Te escribo con total honestidad: ¿tu búsqueda de auto sigue activa para este año o ya cubriste esa parte? Te lo pregunto para actualizar tu ficha o dejarte descansar de mis mensajes con gusto.`,
+                tone2: (m, d) => `Hola [Nombre], buen día. Te contacto de Suzuki Kabah con la intención de cerrar pendientes. Si ya adquiriste otro vehículo, ¡muchas felicidades! Pero si la decisión sobre el/la ${m} quedó en pausa por presupuesto o inventario, dime si vale la pena retomarlo o damos por cerrado el expediente.`,
+                tone3: (m, d) => `Hola [Nombre], ¡espero que todo vaya bien! Aunque pasó un tiempo desde tu cotización del/la ${m}, hoy tenemos condiciones completamente distintas a cuando iniciamos la conversación. Si aún no compraste auto, creo que valdría la pena echarle un vistazo a los beneficios de este ciclo. ¿Te los comparto?`
+            }
+        };
+
+        function generateMessages() {
             const model = document.getElementById('carModel').value;
             const draft = document.getElementById('draftInput').value.trim();
+            const config = strategies[selectedTime];
+
+            document.getElementById('badgeTime').textContent = config.badge;
+            document.getElementById('tone1Text').textContent = config.tone1(model, draft);
+            document.getElementById('tone2Text').textContent = config.tone2(model, draft);
+            document.getElementById('tone3Text').textContent = config.tone3(model, draft);
+
             const resultSection = document.getElementById('resultSection');
-            const outputText = document.getElementById('outputText');
-            const badgeTime = document.getElementById('badgeTime');
-            const tipText = document.getElementById('tipText');
-
-            let message = "";
-            let badgeLabel = "";
-            let tip = "";
-
-            if (selectedTime === '1_week') {
-                badgeLabel = "Lead Tibio (< 1 semana)";
-                tip = "Enfoque dinámico y cercano. Aprovecha que la cotización sigue fresca para resolver dudas técnicas o agendar prueba de manejo.";
-                message = `Hola [Nombre], ¡buen día! Te escribo brevemente de Suzuki Kabah. Estuve revisando los detalles que platicamos sobre el/la ${model} y quería saber si te quedó alguna duda o si prefieres que agendemos una prueba de manejo este fin de semana. ¿Cómo ves?`;
-            } else if (selectedTime === '15_days') {
-                badgeLabel = "Lead Enfriándose (15 días)";
-                tip = "Tono casual y refrescante. Aporta un detalle de valor o disponibilidad para sacarlo de la rutina sin presionar.";
-                message = `Hola [Nombre], ¿cómo estás? Te saludo rápido de Suzuki Kabah. Me acordé de ti porque nos acaban de llegar unidades con una combinación excelente del/la ${model} y quité un momento para avisarte por si seguías evaluando opciones. ¿Cómo va tu proyecto de estreno?`;
-            } else if (selectedTime === '30_days') {
-                badgeLabel = "Lead Frío (30 días)";
-                tip = "Tono de actualización comercial. Usa el cambio de mes o nuevos beneficios como pretexto natural para retomar la charla.";
-                message = `Hola [Nombre], excelente día. Sé que ha pasado un tiempecito desde que platicamos sobre tu interés en el/la ${model}. Arrancamos nuevos esquemas y bonos este mes en Suzuki Kabah que creo que te podrían convenir bastante comparado con lo que vimos antes. ¿Sigues en la búsqueda o ya te decidiste?`;
-            } else {
-                badgeLabel = "Rescate de Base (> 30 días)";
-                tip = "Tono ultra empático y de baja fricción. Asume que los tiempos cambian y dale la opción de responder con absoluta libertad.";
-                message = `Hola [Nombre], sé que pasó un buen rato desde la última vez que platicamos sobre el/la ${model} en Suzuki Kabah. Te escribo brevemente porque sé que los tiempos de compra cambian: dime una cosa, ¿tu proyecto de estrenar auto sigue en pie o ya cubriste esa parte? Lo pregunto para saber si te actualizo información o mejor te dejo descansar de mis mensajes. ¡Un saludo!`;
-            }
-
-            if(draft) {
-                message += `\n\n*(Nota interna recordada: ${draft})*`;
-            }
-
-            outputText.textContent = message;
-            badgeTime.textContent = badgeLabel;
-            tipText.textContent = tip;
-
             resultSection.classList.remove('hidden');
             resultSection.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function copyToClipboard() {
-            const textToCopy = document.getElementById('outputText').textContent;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const btnText = document.getElementById('copyBtnText');
-                const originalText = btnText.textContent;
-                btnText.textContent = "¡Copiado para WhatsApp! 🚀";
+        function copyTone(elementId, btn) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = `<span class="text-emerald-400 font-semibold">¡Copiado para WhatsApp! ✓</span>`;
                 setTimeout(() => {
-                    btnText.textContent = originalText;
+                    btn.innerHTML = originalHtml;
                 }, 2000);
             });
         }
