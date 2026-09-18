@@ -3,166 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asesor Pro - Mejora y Envía en Batch</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Asesor Pro - Mejora y Envía</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(to bottom right, #fef3c7, #fee2e2);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-top: 1rem;
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 0.5rem;
+        }
+        .header p { color: #666; }
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .section { margin-bottom: 1.5rem; }
+        .section h2 {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        .config-btn {
+            background: none;
+            border: none;
+            color: #2563eb;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .config-btn:hover { color: #1d4ed8; }
+        .config-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 0.75rem;
+            display: none;
+        }
+        .config-box.show { display: block; }
+        .config-box p {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        .config-box a {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+        input[type="text"],
+        input[type="password"],
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #ea580c;
+        }
+        textarea { resize: none; height: 100px; }
+        .char-count {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 0.5rem;
+        }
+        .radio-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+        .radio-label {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border: 2px solid #d1d5db;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .radio-label:hover { background-color: #fef3c7; }
+        .radio-label input { margin-right: 0.5rem; }
+        button {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-orange {
+            background: linear-gradient(to right, #ea580c, #dc2626);
+            color: white;
+        }
+        .btn-orange:hover {
+            background: linear-gradient(to right, #d97706, #b91c1c);
+        }
+        .btn-orange:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn-blue {
+            background: #2563eb;
+            color: white;
+        }
+        .btn-blue:hover { background: #1d4ed8; }
+        .btn-green {
+            background: linear-gradient(to right, #16a34a, #059669);
+            color: white;
+        }
+        .btn-green:hover {
+            background: linear-gradient(to right, #15803d, #047857);
+        }
+        .hidden { display: none !important; }
+        .result-box {
+            background: linear-gradient(to right, #f0fdf4, #fef3c7);
+            border: 2px solid #86efac;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        .result-content {
+            background: white;
+            padding: 0.75rem;
+            border: 2px solid #bbf7d0;
+            border-radius: 0.5rem;
+            margin: 0.5rem 0;
+            min-height: 60px;
+        }
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #ea580c;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .error-box {
+            background: #fef2f2;
+            border: 2px solid #fca5a5;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            color: #7f1d1d;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #666;
+        }
+        .status-box {
+            background: #eff6ff;
+            border: 2px solid #93c5fd;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #d1d5db;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #16a34a;
+            width: 0%;
+            transition: width 0.3s;
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-orange-50 to-red-50 min-h-screen p-4">
-    <div class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-8 pt-4">
-            <h1 class="text-3xl font-bold text-orange-900 mb-2">🚗 Asesor Pro</h1>
-            <p class="text-gray-600">Mejora mensajes y envía en WhatsApp en batch automático</p>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚗 Asesor Pro</h1>
+            <p>Mejora mensajes y envía en WhatsApp en batch automático</p>
         </div>
 
-        <!-- Contenedor Principal -->
-        <div class="bg-white rounded-lg shadow-lg p-6 space-y-6">
-
+        <div class="card">
             <!-- Config API URL -->
-            <div class="border-b pb-4">
-                <button onclick="toggleApiConfig()" class="text-sm text-blue-600 hover:text-blue-800 font-semibold">
+            <div style="border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem; margin-bottom: 1rem;">
+                <button class="config-btn" onclick="toggleApiConfig()">
                     ⚙️ Configurar URL de Google Apps Script
                 </button>
-                <div id="apiConfig" class="hidden mt-3 p-3 bg-blue-50 rounded-lg">
-                    <p class="text-xs text-gray-600 mb-2">
-                        Pega la URL de tu Google Apps Script deployado
-                    </p>
-                    <input
-                        type="text"
-                        id="apiUrl"
-                        placeholder="https://script.googleapis.com/macros/d/..."
-                        class="w-full px-3 py-2 border border-gray-300 rounded text-sm"
-                    >
-                    <button onclick="saveApiUrl()" class="mt-2 w-full bg-blue-600 text-white px-3 py-2 rounded text-sm font-semibold hover:bg-blue-700">
-                        Guardar URL
-                    </button>
-                    <p id="apiStatus" class="text-xs text-gray-600 mt-2"></p>
+                <div id="apiConfig" class="config-box">
+                    <p>Pega la URL de tu Google Apps Script deployado</p>
+                    <input type="text" id="apiUrl" placeholder="https://script.googleapis.com/macros/d/...">
+                    <button class="btn-blue" onclick="saveApiUrl()" style="margin-top: 0.5rem;">Guardar URL</button>
+                    <p id="apiStatus" style="margin-top: 0.5rem;"></p>
                 </div>
             </div>
 
-            <!-- Paso 1: Selector de Rango -->
-            <div>
-                <h2 class="text-lg font-bold text-gray-800 mb-3">📋 Paso 1: ¿Cuánto tiempo sin contactar?</h2>
-                <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
-                    <label class="flex items-center p-2 border-2 border-gray-200 rounded cursor-pointer hover:bg-orange-50 transition" onclick="selectRango('1semana')">
-                        <input type="radio" name="rango" value="1semana" checked class="w-4 h-4 text-orange-600">
-                        <span class="ml-2 text-xs font-medium text-gray-700">⏱️ < 1 semana</span>
+            <!-- Paso 1 -->
+            <div class="section">
+                <h2>📋 Paso 1: ¿Cuánto tiempo sin contactar?</h2>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="rango" value="1semana" checked onchange="selectRango('1semana')">
+                        ⏱️ < 1 semana
                     </label>
-                    <label class="flex items-center p-2 border-2 border-gray-200 rounded cursor-pointer hover:bg-orange-50 transition" onclick="selectRango('15dias')">
-                        <input type="radio" name="rango" value="15dias" class="w-4 h-4 text-orange-600">
-                        <span class="ml-2 text-xs font-medium text-gray-700">📅 15 días</span>
+                    <label class="radio-label">
+                        <input type="radio" name="rango" value="15dias" onchange="selectRango('15dias')">
+                        📅 15 días
                     </label>
-                    <label class="flex items-center p-2 border-2 border-gray-200 rounded cursor-pointer hover:bg-orange-50 transition" onclick="selectRango('30dias')">
-                        <input type="radio" name="rango" value="30dias" class="w-4 h-4 text-orange-600">
-                        <span class="ml-2 text-xs font-medium text-gray-700">❄️ 30 días</span>
+                    <label class="radio-label">
+                        <input type="radio" name="rango" value="30dias" onchange="selectRango('30dias')">
+                        ❄️ 30 días
                     </label>
-                    <label class="flex items-center p-2 border-2 border-gray-200 rounded cursor-pointer hover:bg-orange-50 transition" onclick="selectRango('30masdays')">
-                        <input type="radio" name="rango" value="30masdays" class="w-4 h-4 text-orange-600">
-                        <span class="ml-2 text-xs font-medium text-gray-700">🥶 >30 días</span>
+                    <label class="radio-label">
+                        <input type="radio" name="rango" value="30masdays" onchange="selectRango('30masdays')">
+                        🥶 >30 días
                     </label>
                 </div>
             </div>
 
-            <!-- Nombre del Lead (Opcional) -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">
-                    Nombre del lead (opcional)
-                </label>
-                <input
-                    type="text"
-                    id="nombreLead"
-                    placeholder="Ej: Jorge, Adriana, Luis..."
-                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-600"
-                >
+            <!-- Nombre -->
+            <div class="section">
+                <label style="font-weight: 600;">Nombre del lead (opcional)</label>
+                <input type="text" id="nombreLead" placeholder="Ej: Jorge, Adriana, Luis...">
             </div>
 
-            <!-- Paso 2: Mensaje -->
-            <div>
-                <h2 class="text-lg font-bold text-gray-800 mb-3">✍️ Paso 2: Tu mensaje actual</h2>
-                <textarea
-                    id="mensajeActual"
-                    placeholder="Pega aquí el mensaje que tienes..."
-                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-600 h-24 resize-none"
-                ></textarea>
-                <p class="text-xs text-gray-500 mt-1" id="charCount">0 caracteres</p>
+            <!-- Paso 2 -->
+            <div class="section">
+                <h2>✍️ Paso 2: Tu mensaje actual</h2>
+                <textarea id="mensajeActual" placeholder="Pega aquí el mensaje que tienes..."></textarea>
+                <div class="char-count" id="charCount">0 caracteres</div>
             </div>
 
-            <!-- Botón Mejorar -->
-            <button
-                onclick="mejorarMensaje()"
-                id="btnMejorar"
-                class="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold py-3 rounded-lg hover:from-orange-700 hover:to-red-700 transition text-lg shadow-md"
-            >
+            <!-- Botón mejorar -->
+            <button class="btn-orange" id="btnMejorar" onclick="mejorarMensaje()">
                 ✨ Mejorar Mensaje con Claude
             </button>
 
             <!-- Loading -->
-            <div id="loading" class="hidden text-center">
-                <div class="inline-block">
-                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600"></div>
-                    <p class="text-gray-600 mt-2">Mejorando tu mensaje...</p>
+            <div id="loading" class="hidden loading">
+                <div class="spinner"></div>
+                <p style="color: #666; margin-top: 1rem;">Mejorando tu mensaje...</p>
+            </div>
+
+            <!-- Resultado -->
+            <div id="resultadoMensajeContainer" class="hidden section">
+                <div class="result-box">
+                    <h3 style="font-weight: bold; color: #15803d; margin-bottom: 0.5rem;">📝 Tu mensaje mejorado:</h3>
+                    <div id="resultadoMensaje" class="result-content"></div>
+                    <div class="char-count" id="resultadoCharCount">0 caracteres</div>
                 </div>
             </div>
 
-            <!-- Resultado del Mensaje -->
-            <div id="resultadoMensajeContainer" class="hidden">
-                <div class="bg-gradient-to-r from-green-50 to-orange-50 border-2 border-green-300 rounded-lg p-4">
-                    <h3 class="font-bold text-green-900 mb-2">📝 Tu mensaje mejorado:</h3>
-                    <div id="resultadoMensaje" class="bg-white p-3 rounded border-2 border-green-200 text-gray-800 text-sm leading-relaxed mb-2"></div>
-                    <p class="text-xs text-gray-600" id="resultadoCharCount">0 caracteres</p>
-                </div>
+            <!-- Paso 3 -->
+            <div id="numerosTelefonoSection" class="hidden section">
+                <h2>📱 Paso 3: Lista de números (uno por línea)</h2>
+                <p style="font-size: 0.75rem; color: #666; margin-bottom: 0.5rem;">Ejemplo: 5215551234567 o +52 155 5123 4567</p>
+                <textarea id="numerosTelefono" placeholder="5215551234567&#10;5215559876543"></textarea>
+                <div class="char-count" id="telefonoCount">0 números</div>
             </div>
 
-            <!-- Paso 3: Números de Teléfono -->
-            <div id="numerosTelefonoSection" class="hidden">
-                <h2 class="text-lg font-bold text-gray-800 mb-3">📱 Paso 3: Lista de números (uno por línea)</h2>
-                <p class="text-xs text-gray-600 mb-2">Ejemplo: 5215551234567 o +52 155 5123 4567</p>
-                <textarea
-                    id="numerosTelefono"
-                    placeholder="5215551234567&#10;5215559876543&#10;5215552468135"
-                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-600 h-24 resize-none"
-                ></textarea>
-                <p class="text-xs text-gray-500 mt-1" id="telefonoCount">0 números</p>
-            </div>
-
-            <!-- Botón Enviar en Batch -->
-            <button
-                onclick="enviarEnBatch()"
-                id="btnEnviarBatch"
-                class="hidden w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3 rounded-lg hover:from-green-700 hover:to-emerald-700 transition text-lg shadow-md"
-            >
+            <!-- Botón batch -->
+            <button id="btnEnviarBatch" class="hidden btn-green" onclick="enviarEnBatch()" style="margin-top: 1rem;">
                 🚀 Enviar en Batch a WhatsApp (30s entre cada uno)
             </button>
 
-            <!-- Status de envío -->
-            <div id="statusEnvio" class="hidden">
-                <div class="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
-                    <p class="text-blue-800 text-sm font-semibold mb-2">📤 Enviando mensajes...</p>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div id="progressBar" class="bg-green-600 h-2 rounded-full transition-all" style="width: 0%"></div>
-                    </div>
-                    <p id="statusText" class="text-xs text-gray-600 mt-2">0 / 0 mensajes enviados</p>
-                    <p id="timerText" class="text-xs text-orange-600 mt-1">Esperando 30 segundos...</p>
+            <!-- Status -->
+            <div id="statusEnvio" class="hidden section status-box">
+                <p style="font-weight: 600; margin-bottom: 0.5rem;">📤 Enviando mensajes...</p>
+                <div class="progress-bar">
+                    <div id="progressBar" class="progress-fill"></div>
                 </div>
+                <p id="statusText" style="font-size: 0.75rem; margin: 0.5rem 0;">0 / 0 mensajes</p>
+                <p id="timerText" style="font-size: 0.75rem; color: #ea580c;">⏳ Esperando...</p>
             </div>
 
             <!-- Error -->
-            <div id="errorContainer" class="hidden">
-                <div class="bg-red-50 border-2 border-red-300 rounded-lg p-4">
-                    <p class="text-red-800 text-sm" id="errorMsg"></p>
-                    <button onclick="cerrarError()" class="text-red-600 text-sm mt-2 underline">Cerrar</button>
-                </div>
+            <div id="errorContainer" class="hidden error-box section">
+                <p id="errorMsg"></p>
+                <button class="config-btn" onclick="cerrarError()" style="color: #dc2626; margin-top: 0.5rem;">Cerrar</button>
             </div>
         </div>
 
-        <!-- Footer -->
-        <div class="text-center mt-6 text-xs text-gray-600">
+        <div class="footer">
             <p>Diseñado para los asesores de Suzuki Kabah Cancún</p>
-            <p class="mt-1">Con Claude AI y envío en batch automático</p>
+            <p style="margin-top: 0.5rem;">Con Claude AI y envío en batch automático</p>
         </div>
     </div>
 
     <script>
-        // Estado
         let estado = {
             rango: '1semana',
             nombreLead: '',
@@ -172,23 +329,19 @@
             enviando: false
         };
 
-        // Actualizar contador de caracteres
         document.getElementById('mensajeActual').addEventListener('input', (e) => {
             estado.mensajeActual = e.target.value;
             document.getElementById('charCount').textContent = e.target.value.length + ' caracteres';
         });
 
-        // Actualizar contador de teléfonos
         document.getElementById('numerosTelefono').addEventListener('input', (e) => {
             const numeros = e.target.value.split('\n').filter(n => n.trim());
             document.getElementById('telefonoCount').textContent = numeros.length + ' números';
         });
 
         function toggleApiConfig() {
-            document.getElementById('apiConfig').classList.toggle('hidden');
-            if (estado.apiUrl) {
-                document.getElementById('apiStatus').textContent = '✅ URL configurada';
-            }
+            const box = document.getElementById('apiConfig');
+            box.classList.toggle('show');
         }
 
         function saveApiUrl() {
@@ -202,7 +355,7 @@
             document.getElementById('apiStatus').textContent = '✅ URL guardada correctamente';
             document.getElementById('apiUrl').value = '';
             setTimeout(() => {
-                document.getElementById('apiConfig').classList.add('hidden');
+                document.getElementById('apiConfig').classList.remove('show');
             }, 1500);
         }
 
@@ -278,7 +431,6 @@
                 return;
             }
 
-            // Limpia y formatea números
             const numerosFormateados = numeros.map(num => {
                 let limpio = num.replace(/[\s\-\(\)]/g, '');
                 if (!limpio.startsWith('+')) {
@@ -299,17 +451,14 @@
                 const numero = numerosFormateados[i];
                 const link = `https://wa.me/${numero}?text=${mensaje}`;
 
-                // Abre en nueva ventana
                 window.open(link, '_blank');
 
-                // Actualiza progress
                 const porcentaje = ((i + 1) / numerosFormateados.length) * 100;
                 document.getElementById('progressBar').style.width = porcentaje + '%';
                 document.getElementById('statusText').textContent = `${i + 1} / ${numerosFormateados.length} mensajes enviados`;
 
-                // Espera 30 segundos antes del siguiente (excepto el último)
                 if (i < numerosFormateados.length - 1) {
-                    await esperarCon Timer(30, i + 1, numerosFormateados.length);
+                    await esperarConTimer(30, i + 1, numerosFormateados.length);
                 }
             }
 
@@ -329,14 +478,12 @@
         function mostrarError(msg) {
             document.getElementById('errorMsg').textContent = msg;
             document.getElementById('errorContainer').classList.remove('hidden');
-            window.scrollTo(0, document.getElementById('errorContainer').offsetTop - 100);
         }
 
         function cerrarError() {
             document.getElementById('errorContainer').classList.add('hidden');
         }
 
-        // Mostrar estado al cargar
         window.addEventListener('load', () => {
             if (estado.apiUrl) {
                 document.getElementById('apiStatus').textContent = '✅ URL configurada';
