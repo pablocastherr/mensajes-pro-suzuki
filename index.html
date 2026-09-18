@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asesor Pro - Mejora y Envía</title>
+    <title>Asesor Pro - Mejora y Envía en Batch</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-br from-orange-50 to-red-50 min-h-screen p-4">
@@ -11,11 +11,33 @@
         <!-- Header -->
         <div class="text-center mb-8 pt-4">
             <h1 class="text-3xl font-bold text-orange-900 mb-2">🚗 Asesor Pro</h1>
-            <p class="text-gray-600">Mejora mensajes y envía en WhatsApp en batch</p>
+            <p class="text-gray-600">Mejora mensajes y envía en WhatsApp en batch automático</p>
         </div>
 
         <!-- Contenedor Principal -->
         <div class="bg-white rounded-lg shadow-lg p-6 space-y-6">
+
+            <!-- Config API URL -->
+            <div class="border-b pb-4">
+                <button onclick="toggleApiConfig()" class="text-sm text-blue-600 hover:text-blue-800 font-semibold">
+                    ⚙️ Configurar URL de Google Apps Script
+                </button>
+                <div id="apiConfig" class="hidden mt-3 p-3 bg-blue-50 rounded-lg">
+                    <p class="text-xs text-gray-600 mb-2">
+                        Pega la URL de tu Google Apps Script deployado
+                    </p>
+                    <input
+                        type="text"
+                        id="apiUrl"
+                        placeholder="https://script.googleapis.com/macros/d/..."
+                        class="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                    >
+                    <button onclick="saveApiUrl()" class="mt-2 w-full bg-blue-600 text-white px-3 py-2 rounded text-sm font-semibold hover:bg-blue-700">
+                        Guardar URL
+                    </button>
+                    <p id="apiStatus" class="text-xs text-gray-600 mt-2"></p>
+                </div>
+            </div>
 
             <!-- Paso 1: Selector de Rango -->
             <div>
@@ -40,6 +62,19 @@
                 </div>
             </div>
 
+            <!-- Nombre del Lead (Opcional) -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    Nombre del lead (opcional)
+                </label>
+                <input
+                    type="text"
+                    id="nombreLead"
+                    placeholder="Ej: Jorge, Adriana, Luis..."
+                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-600"
+                >
+            </div>
+
             <!-- Paso 2: Mensaje -->
             <div>
                 <h2 class="text-lg font-bold text-gray-800 mb-3">✍️ Paso 2: Tu mensaje actual</h2>
@@ -51,13 +86,13 @@
                 <p class="text-xs text-gray-500 mt-1" id="charCount">0 caracteres</p>
             </div>
 
-            <!-- Paso 3: Generar Mensaje -->
+            <!-- Botón Mejorar -->
             <button
                 onclick="mejorarMensaje()"
                 id="btnMejorar"
                 class="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold py-3 rounded-lg hover:from-orange-700 hover:to-red-700 transition text-lg shadow-md"
             >
-                ✨ Generar Mensaje Mejorado
+                ✨ Mejorar Mensaje con Claude
             </button>
 
             <!-- Loading -->
@@ -77,7 +112,7 @@
                 </div>
             </div>
 
-            <!-- Paso 4: Números de Teléfono -->
+            <!-- Paso 3: Números de Teléfono -->
             <div id="numerosTelefonoSection" class="hidden">
                 <h2 class="text-lg font-bold text-gray-800 mb-3">📱 Paso 3: Lista de números (uno por línea)</h2>
                 <p class="text-xs text-gray-600 mb-2">Ejemplo: 5215551234567 o +52 155 5123 4567</p>
@@ -89,29 +124,24 @@
                 <p class="text-xs text-gray-500 mt-1" id="telefonoCount">0 números</p>
             </div>
 
-            <!-- Botón Generar Links -->
+            <!-- Botón Enviar en Batch -->
             <button
-                onclick="generarLinks()"
-                id="btnGenerarLinks"
-                class="hidden w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-bold py-3 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition text-lg shadow-md"
+                onclick="enviarEnBatch()"
+                id="btnEnviarBatch"
+                class="hidden w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3 rounded-lg hover:from-green-700 hover:to-emerald-700 transition text-lg shadow-md"
             >
-                🔗 Generar Links de WhatsApp
+                🚀 Enviar en Batch a WhatsApp (30s entre cada uno)
             </button>
 
-            <!-- Tabla de Links -->
-            <div id="tablalInksContainer" class="hidden">
-                <h3 class="font-bold text-gray-800 mb-3">✅ Links listos para enviar:</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="text-left px-3 py-2">Teléfono</th>
-                                <th class="text-left px-3 py-2">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaLinks" class="divide-y divide-gray-200">
-                        </tbody>
-                    </table>
+            <!-- Status de envío -->
+            <div id="statusEnvio" class="hidden">
+                <div class="bg-blue-50 border-2 border-blue-300 rounded-lg p-4">
+                    <p class="text-blue-800 text-sm font-semibold mb-2">📤 Enviando mensajes...</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div id="progressBar" class="bg-green-600 h-2 rounded-full transition-all" style="width: 0%"></div>
+                    </div>
+                    <p id="statusText" class="text-xs text-gray-600 mt-2">0 / 0 mensajes enviados</p>
+                    <p id="timerText" class="text-xs text-orange-600 mt-1">Esperando 30 segundos...</p>
                 </div>
             </div>
 
@@ -127,7 +157,7 @@
         <!-- Footer -->
         <div class="text-center mt-6 text-xs text-gray-600">
             <p>Diseñado para los asesores de Suzuki Kabah Cancún</p>
-            <p class="mt-1">Sin API key, sin complicaciones. Solo mensajes y WhatsApp.</p>
+            <p class="mt-1">Con Claude AI y envío en batch automático</p>
         </div>
     </div>
 
@@ -135,8 +165,11 @@
         // Estado
         let estado = {
             rango: '1semana',
+            nombreLead: '',
             mensajeActual: '',
-            mensajeMejorado: ''
+            mensajeMejorado: '',
+            apiUrl: localStorage.getItem('asesorProApiUrl') || '',
+            enviando: false
         };
 
         // Actualizar contador de caracteres
@@ -151,77 +184,92 @@
             document.getElementById('telefonoCount').textContent = numeros.length + ' números';
         });
 
+        function toggleApiConfig() {
+            document.getElementById('apiConfig').classList.toggle('hidden');
+            if (estado.apiUrl) {
+                document.getElementById('apiStatus').textContent = '✅ URL configurada';
+            }
+        }
+
+        function saveApiUrl() {
+            const url = document.getElementById('apiUrl').value.trim();
+            if (!url) {
+                alert('Ingresa la URL de Google Apps Script');
+                return;
+            }
+            localStorage.setItem('asesorProApiUrl', url);
+            estado.apiUrl = url;
+            document.getElementById('apiStatus').textContent = '✅ URL guardada correctamente';
+            document.getElementById('apiUrl').value = '';
+            setTimeout(() => {
+                document.getElementById('apiConfig').classList.add('hidden');
+            }, 1500);
+        }
+
         function selectRango(value) {
             estado.rango = value;
             document.querySelector(`input[value="${value}"]`).checked = true;
         }
 
-        function mejorarMensaje() {
+        async function mejorarMensaje() {
             const mensaje = document.getElementById('mensajeActual').value.trim();
+            const nombre = document.getElementById('nombreLead').value.trim();
 
             if (!mensaje) {
                 mostrarError('Pega el mensaje que quieres mejorar');
                 return;
             }
 
+            if (!estado.apiUrl) {
+                mostrarError('Configura la URL de Google Apps Script primero (arriba)');
+                return;
+            }
+
+            estado.nombreLead = nombre;
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('resultadoMensajeContainer').classList.add('hidden');
             document.getElementById('numerosTelefonoSection').classList.add('hidden');
-            document.getElementById('btnGenerarLinks').classList.add('hidden');
-            document.getElementById('tablalInksContainer').classList.add('hidden');
+            document.getElementById('btnEnviarBatch').classList.add('hidden');
             document.getElementById('errorContainer').classList.add('hidden');
+            document.getElementById('btnMejorar').disabled = true;
 
-            // Simular mejora del mensaje (en producción sería con API)
-            // Por ahora, hacemos una mejora básica client-side
-            setTimeout(() => {
-                const mensajeMejorado = mejorarMensajeLocalmente(mensaje);
-                estado.mensajeMejorado = mensajeMejorado;
+            try {
+                const response = await fetch(estado.apiUrl, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        mensaje: mensaje,
+                        rango: estado.rango,
+                        nombre: nombre
+                    })
+                });
 
-                document.getElementById('resultadoMensaje').textContent = mensajeMejorado;
-                document.getElementById('resultadoCharCount').textContent = mensajeMejorado.length + ' caracteres';
-                document.getElementById('resultadoMensajeContainer').classList.remove('hidden');
-                document.getElementById('numerosTelefonoSection').classList.remove('hidden');
-                document.getElementById('btnGenerarLinks').classList.remove('hidden');
+                const data = await response.json();
+
+                if (data.error) {
+                    mostrarError(`Error: ${data.error}`);
+                } else {
+                    estado.mensajeMejorado = data.mensaje;
+                    document.getElementById('resultadoMensaje').textContent = estado.mensajeMejorado;
+                    document.getElementById('resultadoCharCount').textContent = estado.mensajeMejorado.length + ' caracteres';
+                    document.getElementById('resultadoMensajeContainer').classList.remove('hidden');
+                    document.getElementById('numerosTelefonoSection').classList.remove('hidden');
+                    document.getElementById('btnEnviarBatch').classList.remove('hidden');
+                    window.scrollTo(0, document.getElementById('resultadoMensajeContainer').offsetTop - 100);
+                }
+            } catch (error) {
+                mostrarError(`Error: ${error.message}`);
+            } finally {
                 document.getElementById('loading').classList.add('hidden');
-
-                window.scrollTo(0, document.getElementById('resultadoMensajeContainer').offsetTop - 100);
-            }, 1500);
+                document.getElementById('btnMejorar').disabled = false;
+            }
         }
 
-        function mejorarMensajeLocalmente(mensaje) {
-            // Lógica básica de mejora client-side
-            // Elimina presentaciones innecesarias
-            let mejorado = mensaje;
-
-            // Elimina patrones comunes robóticos
-            mejorado = mejorado.replace(/Soy .{0,30} de Suzuki[,.]?/i, '');
-            mejorado = mejorado.replace(/quedo a (?:la )?orden/gi, '');
-            mejorado = mejorado.replace(/sin compromiso/gi, '');
-            mejorado = mejorado.replace(/quedo pendiente/gi, '');
-            mejorado = mejorado.replace(/Te agradezco tu tiempo/gi, '');
-
-            // Limpia espacios extra
-            mejorado = mejorado.replace(/\n\n+/g, '\n').trim();
-
-            // Si es muy corto, añade una pregunta simple
-            if (mejorado.length < 30) {
-                mejorado = mejorado + ' ¿Me das 2 minutos?';
+        async function enviarEnBatch() {
+            if (estado.enviando) {
+                mostrarError('Ya hay un envío en proceso');
+                return;
             }
 
-            // Asegura que termina con pregunta
-            if (!mejorado.match(/[¿?]$/)) {
-                mejorado = mejorado + ' ¿Qué dices?';
-            }
-
-            // Limita a 200 caracteres
-            if (mejorado.length > 200) {
-                mejorado = mejorado.substring(0, 197) + '...';
-            }
-
-            return mejorado;
-        }
-
-        function generarLinks() {
             const numerosTexto = document.getElementById('numerosTelefono').value;
             const numeros = numerosTexto.split('\n').filter(n => n.trim());
 
@@ -232,9 +280,7 @@
 
             // Limpia y formatea números
             const numerosFormateados = numeros.map(num => {
-                // Elimina espacios, guiones, paréntesis
                 let limpio = num.replace(/[\s\-\(\)]/g, '');
-                // Si no empieza con +, asume que es México
                 if (!limpio.startsWith('+')) {
                     limpio = '52' + limpio;
                 } else {
@@ -243,36 +289,59 @@
                 return limpio;
             });
 
-            // Genera tabla de links
-            const tablaHTML = numerosFormateados.map((numero, index) => {
-                const mensaje = encodeURIComponent(estado.mensajeMejorado);
+            estado.enviando = true;
+            document.getElementById('statusEnvio').classList.remove('hidden');
+            document.getElementById('btnEnviarBatch').disabled = true;
+
+            const mensaje = encodeURIComponent(estado.mensajeMejorado);
+
+            for (let i = 0; i < numerosFormateados.length; i++) {
+                const numero = numerosFormateados[i];
                 const link = `https://wa.me/${numero}?text=${mensaje}`;
-                return `
-                    <tr>
-                        <td class="px-3 py-3 font-mono text-gray-800">+${numero}</td>
-                        <td class="px-3 py-3">
-                            <a href="${link}" target="_blank" rel="noopener noreferrer" class="inline-block bg-green-600 text-white px-4 py-2 rounded text-xs font-bold hover:bg-green-700 transition">
-                                📱 Abrir WhatsApp
-                            </a>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
 
-            document.getElementById('tablaLinks').innerHTML = tablaHTML;
-            document.getElementById('tablalInksContainer').classList.remove('hidden');
+                // Abre en nueva ventana
+                window.open(link, '_blank');
 
-            window.scrollTo(0, document.getElementById('tablalInksContainer').offsetTop - 100);
+                // Actualiza progress
+                const porcentaje = ((i + 1) / numerosFormateados.length) * 100;
+                document.getElementById('progressBar').style.width = porcentaje + '%';
+                document.getElementById('statusText').textContent = `${i + 1} / ${numerosFormateados.length} mensajes enviados`;
+
+                // Espera 30 segundos antes del siguiente (excepto el último)
+                if (i < numerosFormateados.length - 1) {
+                    await esperarCon Timer(30, i + 1, numerosFormateados.length);
+                }
+            }
+
+            document.getElementById('statusEnvio').classList.add('hidden');
+            document.getElementById('statusText').textContent = '✅ ¡Todos los mensajes enviados!';
+            document.getElementById('btnEnviarBatch').disabled = false;
+            estado.enviando = false;
+        }
+
+        async function esperarConTimer(segundos, enviados, total) {
+            for (let s = segundos; s > 0; s--) {
+                document.getElementById('timerText').textContent = `⏳ ${s} segundos antes del siguiente...`;
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
         }
 
         function mostrarError(msg) {
             document.getElementById('errorMsg').textContent = msg;
             document.getElementById('errorContainer').classList.remove('hidden');
+            window.scrollTo(0, document.getElementById('errorContainer').offsetTop - 100);
         }
 
         function cerrarError() {
             document.getElementById('errorContainer').classList.add('hidden');
         }
+
+        // Mostrar estado al cargar
+        window.addEventListener('load', () => {
+            if (estado.apiUrl) {
+                document.getElementById('apiStatus').textContent = '✅ URL configurada';
+            }
+        });
     </script>
 </body>
 </html>
