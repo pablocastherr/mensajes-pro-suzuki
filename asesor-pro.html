@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesor Pro - Mejora tu Mensaje Suzuki</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-orange-50 to-red-50 min-h-screen p-4">
+    <div class="max-w-2xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8 pt-4">
+            <h1 class="text-3xl font-bold text-orange-900 mb-2">🚗 Asesor Pro</h1>
+            <p class="text-gray-600">Mejora tu mensaje y aumenta respuestas</p>
+        </div>
+
+        <!-- Contenedor Principal -->
+        <div class="bg-white rounded-lg shadow-lg p-6 space-y-6">
+
+            <!-- Configuración API Key -->
+            <div class="border-b pb-4">
+                <button onclick="toggleApiConfig()" class="text-sm text-blue-600 hover:text-blue-800 font-semibold">
+                    ⚙️ Configurar API Key (ingresa una sola vez)
+                </button>
+                <div id="apiConfig" class="hidden mt-3 p-3 bg-blue-50 rounded-lg">
+                    <p class="text-xs text-gray-600 mb-2">
+                        Necesitas una API key de Claude.
+                        <a href="https://console.anthropic.com/account/keys" target="_blank" class="text-blue-600 underline">Obtenla gratis aquí</a>
+                    </p>
+                    <input
+                        type="password"
+                        id="apiKey"
+                        placeholder="sk-ant-..."
+                        class="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+                    >
+                    <button onclick="saveApiKey()" class="mt-2 w-full bg-blue-600 text-white px-3 py-2 rounded text-sm font-semibold hover:bg-blue-700">
+                        Guardar API Key
+                    </button>
+                    <p id="apiStatus" class="text-xs text-gray-600 mt-2"></p>
+                </div>
+            </div>
+
+            <!-- Selector de Rango de Tiempo -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-3">
+                    ¿Cuánto tiempo sin contactar al lead?
+                </label>
+                <div class="space-y-2">
+                    <label class="flex items-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-orange-50 transition" onclick="selectRango('1semana')">
+                        <input type="radio" name="rango" value="1semana" checked class="w-4 h-4 text-orange-600">
+                        <span class="ml-3 text-sm font-medium text-gray-700">
+                            ⏱️ Menos de 1 semana (Lead Tibio)
+                        </span>
+                    </label>
+                    <label class="flex items-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-orange-50 transition" onclick="selectRango('15dias')">
+                        <input type="radio" name="rango" value="15dias" class="w-4 h-4 text-orange-600">
+                        <span class="ml-3 text-sm font-medium text-gray-700">
+                            📅 15 días (Lead Enfriándose)
+                        </span>
+                    </label>
+                    <label class="flex items-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-orange-50 transition" onclick="selectRango('30dias')">
+                        <input type="radio" name="rango" value="30dias" class="w-4 h-4 text-orange-600">
+                        <span class="ml-3 text-sm font-medium text-gray-700">
+                            ❄️ 30 días (Lead Frío)
+                        </span>
+                    </label>
+                    <label class="flex items-center p-3 border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-orange-50 transition" onclick="selectRango('30masdays')">
+                        <input type="radio" name="rango" value="30masdays" class="w-4 h-4 text-orange-600">
+                        <span class="ml-3 text-sm font-medium text-gray-700">
+                            🥶 Más de 30 días (Rescate)
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Nombre del Lead (Opcional) -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    Nombre del lead (opcional)
+                </label>
+                <input
+                    type="text"
+                    id="nombreLead"
+                    placeholder="Ej: Jorge, Adriana, Luis..."
+                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-600"
+                >
+            </div>
+
+            <!-- Mensaje Actual -->
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                    Pega el mensaje que vas a enviar
+                </label>
+                <textarea
+                    id="mensajeActual"
+                    placeholder="Pega aquí el mensaje que tienes..."
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-orange-600 h-28 resize-none"
+                ></textarea>
+                <p class="text-xs text-gray-500 mt-1" id="charCount">0 caracteres</p>
+            </div>
+
+            <!-- Botón Mejorar -->
+            <button
+                onclick="mejorarMensaje()"
+                id="btnMejorar"
+                class="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold py-3 rounded-lg hover:from-orange-700 hover:to-red-700 transition text-lg shadow-md"
+            >
+                ✨ Mejorar Mensaje
+            </button>
+
+            <!-- Loading -->
+            <div id="loading" class="hidden text-center">
+                <div class="inline-block">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600"></div>
+                    <p class="text-gray-600 mt-2">Mejorando tu mensaje...</p>
+                </div>
+            </div>
+
+            <!-- Resultado -->
+            <div id="resultadoContainer" class="hidden">
+                <div class="bg-gradient-to-r from-green-50 to-orange-50 border-2 border-green-300 rounded-lg p-4">
+                    <h3 class="font-bold text-green-900 mb-3">📝 Tu mensaje mejorado:</h3>
+                    <div id="resultado" class="bg-white p-4 rounded border-2 border-green-200 text-gray-800 min-h-20 mb-3 text-sm leading-relaxed"></div>
+                    <p class="text-xs text-gray-600 mb-3" id="resultadoCharCount">0 caracteres</p>
+                    <button
+                        onclick="copiarMensaje()"
+                        class="w-full bg-green-600 text-white font-bold py-2 rounded-lg hover:bg-green-700 transition"
+                    >
+                        📋 Copiar Mensaje
+                    </button>
+                    <p id="copiadoMsg" class="text-xs text-green-600 text-center mt-2 hidden">✅ ¡Copiado! Ya puedes pegarlo en WhatsApp</p>
+                </div>
+            </div>
+
+            <!-- Error -->
+            <div id="errorContainer" class="hidden">
+                <div class="bg-red-50 border-2 border-red-300 rounded-lg p-4">
+                    <p class="text-red-800 text-sm" id="errorMsg"></p>
+                    <button onclick="cerrarError()" class="text-red-600 text-sm mt-2 underline">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-6 text-xs text-gray-600">
+            <p>Diseñado para los asesores de Suzuki Kabah Cancún</p>
+            <p class="mt-1">API key guardada de forma segura en tu dispositivo</p>
+        </div>
+    </div>
+
+    <script>
+        // Estado
+        let estado = {
+            apiKey: localStorage.getItem('asesorProApiKey') || '',
+            rango: '1semana',
+            nombreLead: ''
+        };
+
+        // Actualizar contador de caracteres
+        document.getElementById('mensajeActual').addEventListener('input', (e) => {
+            document.getElementById('charCount').textContent = e.target.value.length + ' caracteres';
+        });
+
+        function toggleApiConfig() {
+            document.getElementById('apiConfig').classList.toggle('hidden');
+            if (!estado.apiKey) {
+                document.getElementById('apiKey').focus();
+            } else {
+                document.getElementById('apiStatus').textContent = '✅ API Key guardada';
+            }
+        }
+
+        function saveApiKey() {
+            const key = document.getElementById('apiKey').value.trim();
+            if (!key) {
+                alert('Ingresa tu API key');
+                return;
+            }
+            localStorage.setItem('asesorProApiKey', key);
+            estado.apiKey = key;
+            document.getElementById('apiStatus').textContent = '✅ API Key guardada correctamente';
+            document.getElementById('apiKey').value = '';
+            setTimeout(() => {
+                document.getElementById('apiConfig').classList.add('hidden');
+            }, 1500);
+        }
+
+        function selectRango(value) {
+            estado.rango = value;
+            document.querySelector(`input[value="${value}"]`).checked = true;
+        }
+
+        function mejorarMensaje() {
+            const mensaje = document.getElementById('mensajeActual').value.trim();
+            const nombre = document.getElementById('nombreLead').value.trim();
+
+            if (!mensaje) {
+                mostrarError('Pega el mensaje que quieres mejorar');
+                return;
+            }
+
+            if (!estado.apiKey) {
+                mostrarError('Configura tu API key primero (arriba a la izquierda)');
+                return;
+            }
+
+            estado.nombreLead = nombre;
+            llamarClaude(mensaje);
+        }
+
+        async function llamarClaude(mensaje) {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('resultadoContainer').classList.add('hidden');
+            document.getElementById('errorContainer').classList.add('hidden');
+            document.getElementById('btnMejorar').disabled = true;
+
+            const rangoDescripcion = {
+                '1semana': 'menos de 1 semana (lead tibio, urgencia media, servicial)',
+                '15dias': '15 días (lead enfriándose, casual, oportuno)',
+                '30dias': '30 días (lead frío, directo, informativo, menciona nuevas promociones)',
+                '30masdays': 'más de 30 días (lead muy frío, ultra empático, desapegado, último gancho)'
+            };
+
+            const prompt = `Eres experto en ventas automotriz y WhatsApp. Tu tarea es mejorar SIGNIFICATIVAMENTE este mensaje para que suene humano, efectivo y genere respuesta.
+
+CONTEXTO:
+- Tiempo sin contactar al lead: ${rangoDescripcion[estado.rango]}
+- Mensaje actual: "${mensaje}"
+- Nombre del lead: ${estado.nombreLead || '(sin especificar)'}
+
+REGLAS OBLIGATORIAS:
+1. Lenguaje humano, fresco, conversacional. NADA robótico
+2. ELIMINA: presentaciones innecesarias ("Soy X de Y"), frases desgastadas ("quedo a la orden", "sin compromiso")
+3. Termina SIEMPRE con una pregunta simple (sí/no/elección)
+4. Si mencionas modelo Suzuki, OBLIGATORIO: "el [modelo]" (ej: "el Swift", "el Jimny")
+5. MÁXIMO 200 caracteres
+6. Si incluye nombre del lead, usa: "Hola [nombre]" al inicio (máximo)
+7. Agrega VALOR en cada línea (no preguntes solo por preguntar)
+
+TONO SEGÚN RANGO:
+- <1 semana: Dinámico, servicial, resuelve dudas
+- 15 días: Casual, oportuno, recordatorio amigable
+- 30 días: Informativo, directo, menciona algo nuevo (promoción, disponibilidad)
+- >30 días: Ultra empático, desapegado, es tu ÚLTIMO intento
+
+SALIDA:
+Solo el mensaje mejorado. SIN explicaciones. SIN comillas. SIN nada más.
+Debe ser COPIAR Y PEGAR directo a WhatsApp.`;
+
+            try {
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': estado.apiKey,
+                        'anthropic-version': '2023-06-01'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-3-5-sonnet-20241022',
+                        max_tokens: 300,
+                        messages: [
+                            {
+                                role: 'user',
+                                content: prompt
+                            }
+                        ]
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error?.message || 'Error en la API');
+                }
+
+                const data = await response.json();
+                const mensajeNovedoso = data.content[0].text.trim();
+
+                mostrarResultado(mensajeNovedoso);
+            } catch (error) {
+                mostrarError(`Error: ${error.message}`);
+            } finally {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('btnMejorar').disabled = false;
+            }
+        }
+
+        function mostrarResultado(mensaje) {
+            document.getElementById('resultado').textContent = mensaje;
+            document.getElementById('resultadoCharCount').textContent = mensaje.length + ' caracteres';
+            document.getElementById('resultadoContainer').classList.remove('hidden');
+            document.getElementById('copiadoMsg').classList.add('hidden');
+            window.scrollTo(0, document.getElementById('resultadoContainer').offsetTop - 100);
+        }
+
+        function copiarMensaje() {
+            const texto = document.getElementById('resultado').textContent;
+            navigator.clipboard.writeText(texto).then(() => {
+                document.getElementById('copiadoMsg').classList.remove('hidden');
+                setTimeout(() => {
+                    document.getElementById('copiadoMsg').classList.add('hidden');
+                }, 3000);
+            });
+        }
+
+        function mostrarError(msg) {
+            document.getElementById('errorMsg').textContent = msg;
+            document.getElementById('errorContainer').classList.remove('hidden');
+            window.scrollTo(0, document.getElementById('errorContainer').offsetTop - 100);
+        }
+
+        function cerrarError() {
+            document.getElementById('errorContainer').classList.add('hidden');
+        }
+
+        // Mostrar estado de API key al cargar
+        window.addEventListener('load', () => {
+            if (estado.apiKey) {
+                document.getElementById('apiStatus').textContent = '✅ API Key configurada';
+            }
+        });
+    </script>
+</body>
+</html>
